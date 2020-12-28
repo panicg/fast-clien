@@ -1,4 +1,4 @@
-package com.chainrefund.fast_clien
+package com.panicdev.fast_clien
 
 import org.junit.Test
 

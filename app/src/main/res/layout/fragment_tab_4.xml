@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="v"
+            type="com.panicdev.fast_clien.view.fragment.TabFragment4" />
+
+        <variable
+            name="vm"
+            type="com.panicdev.fast_clien.viewModel.TabViewModel4" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.panicdev.base_bottom_navigation_mvvm.view.other.CustomToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:backgroundColor="@android:color/white"
+            app:customTitle="4"
+            app:customTitleColor="@color/black" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

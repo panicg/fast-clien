@@ -1,4 +1,4 @@
-package com.chainrefund.fast_clien
+package com.panicdev.fast_clien
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
