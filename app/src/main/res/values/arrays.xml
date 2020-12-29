@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_main">
+        <item>모두의공원</item>
+        <item>사진게시판</item>
+        <item>아무거나질문</item>
+        <item>새로운소식</item>
+        <item>유용한사이트</item>
+        <item>자료실</item>
+        <item>팁과강좌</item>
+        <item>사용기</item>
+        <item>체험단사용기</item>
+        <item>알뜰구매</item>
+        <item>회원중고장터</item>
+        <item>직접흥보</item>
+    </string-array>
+</resources>

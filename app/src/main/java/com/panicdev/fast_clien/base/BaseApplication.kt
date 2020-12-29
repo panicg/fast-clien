@@ -3,6 +3,7 @@ package com.panicdev.fast_clien.base
 import android.app.Application
 import android.content.Context
 import android.os.Handler
+import com.panicdev.fast_clien.viewModel.BottomMenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -48,9 +49,9 @@ class BaseApplication : Application() {
         /**
          * 기본
          */
-//        viewModel {
-//            TabViewModel1()
-//        }
+        viewModel {
+            BottomMenuViewModel()
+        }
 //        viewModel {
 //            TabViewModel2()
 //        }
