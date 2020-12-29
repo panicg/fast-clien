@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.FrameLayout
-import com.panicdev.base_bottom_navigation_mvvm.databinding.ViewIndicatorBinding
+import com.panicdev.fast_clien.databinding.ViewIndicatorBinding
 
 class IndicatorView : FrameLayout {
 

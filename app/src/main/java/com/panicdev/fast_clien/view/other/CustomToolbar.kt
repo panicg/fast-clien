@@ -7,8 +7,8 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import com.panicdev.base_bottom_navigation_mvvm.R
-import com.panicdev.base_bottom_navigation_mvvm.databinding.ViewCustomToolbarBinding
+import com.panicdev.fast_clien.R
+import com.panicdev.fast_clien.databinding.ViewCustomToolbarBinding
 
 class CustomToolbar : Toolbar, Toolbar.OnMenuItemClickListener {
 

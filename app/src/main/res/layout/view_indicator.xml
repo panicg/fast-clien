@@ -5,7 +5,7 @@
 
         <variable
             name="view"
-            type="com.panicdev.base_bottom_navigation_mvvm.view.other.IndicatorView" />
+            type="com.panicdev.fast_clien.view.other.IndicatorView" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
