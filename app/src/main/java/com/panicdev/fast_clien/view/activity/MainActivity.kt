@@ -13,6 +13,7 @@ class MainActivity : CleanBaseActivity() {
 
     lateinit var mBinding : ActivityMainBinding
 
+    //하단 메뉴 프래그먼트
     val bottomMenuFragment = BottomMenuFragment()
 
     lateinit var fragmentTransaction: FragmentTransaction
