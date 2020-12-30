@@ -1,8 +1,11 @@
 package com.panicdev.fast_clien.view.activity
 
 import android.os.Bundle
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.panicdev.fast_clien.R
 import com.panicdev.fast_clien.base.CleanBaseActivity
 import com.panicdev.fast_clien.databinding.ActivityMainBinding
@@ -14,7 +17,8 @@ class MainActivity : CleanBaseActivity() {
     lateinit var mBinding : ActivityMainBinding
 
     //하단 메뉴 프래그먼트
-    val bottomMenuFragment = BottomMenuFragment()
+    private val bottomMenuFragment = BottomMenuFragment()
+    lateinit var sheetBehaviorBottom: BottomSheetBehavior<ConstraintLayout>
 
     lateinit var fragmentTransaction: FragmentTransaction
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +33,23 @@ class MainActivity : CleanBaseActivity() {
 
             toolbar.run {
                 title = "클리앙"
+            }
+
+            //하단 시트
+            sheetBehaviorBottom = BottomSheetBehavior.from(bottomSheet.bottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onSlide(p0: View, p1: Float) {
+                    }
+
+                    override fun onStateChanged(p0: View, p1: Int) {
+                        when (p1) {
+                            BottomSheetBehavior.STATE_EXPANDED ->{}
+                            BottomSheetBehavior.STATE_HIDDEN -> {}
+                            BottomSheetBehavior.STATE_COLLAPSED -> {}
+                        }
+                    }
+                })
             }
         }
     }
