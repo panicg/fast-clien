@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="view"
             type="com.panicdev.fast_clien.view.activity.MainActivity" />
@@ -18,9 +19,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="클리앙"
+            app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_main_tab"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:title="모두의공원" />
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -29,11 +30,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_list"
+
+            <FrameLayout
+                android:id="@+id/frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="?attr/actionBarSize"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
             <include
                 android:id="@+id/bottom_sheet"

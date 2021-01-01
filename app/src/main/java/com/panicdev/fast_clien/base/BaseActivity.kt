@@ -16,8 +16,8 @@ import com.panicdev.kevin.common.AndroidUtilities
 abstract class BaseActivity<T : ViewDataBinding, R : BaseViewModel> : CleanBaseActivity() {
 
     lateinit var mBinding: T
-    abstract val mViewModel: R
     abstract val layoutResourceId: Int
+    abstract val mViewModel: R
     lateinit var indicatorView: IndicatorView
 
     protected inline fun <reified T : ViewDataBinding> binding(@LayoutRes resId: Int): Lazy<T> =
