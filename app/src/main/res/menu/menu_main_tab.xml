@@ -6,27 +6,10 @@
 
     <item
         android:id="@+id/action_tab_refund"
-        android:title="Tab 1"
+        android:title="setting"
+        android:icon="@drawable/ic_setting_foreground"
         app:showAsAction="withText" />
-    <item
-        android:id="@+id/action_tab_receipt"
-        android:title="Tab 2"
-        app:showAsAction="withText" />
-    <item
-        android:id="@+id/action_tab_shopping"
-        android:title="Tab 3"
-        app:showAsAction="withText" />
-    <item
-        android:id="@+id/action_tab_more"
-        android:title="Tab 4"
-        app:showAsAction="withText" />
+
 </menu>
 
 
-    <!--
-        showAsAction Type
-        app:showAsAction="always" : 항상 보이게 표시
-        app:showAsAction="never" : 항상 overflow 에 표시
-        app:showAsAction="ifRoom" : 액션바에 공간이 있을경우 표시
-        app:showAsAction="withText" : 액션바에 아이콘과 텍스트 함께 표시
-       -->
