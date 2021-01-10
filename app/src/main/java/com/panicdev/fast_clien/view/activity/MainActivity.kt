@@ -27,18 +27,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     var currentFragment: Fragment? = null
 
+    var listFragment: BoardListFragment? = null
+    var detailFragment: BoardDetailFragment? = null
+
 
     override fun setData() {
+        listFragment = BoardListFragment()
 
     }
 
     override fun setView() {
         mBinding.run {
             view = this@MainActivity
-
-            changeFragment(BoardListFragment())
-
-
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(frame.id, listFragment!!).commit()
         }
     }
 
@@ -48,8 +50,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    fun replacePage() {
-        changeFragment(BoardDetailFragment())
+
+    fun toDetail() {
+        changeFragment(true)
+    }
+
+    fun toList() {
+        changeFragment(false)
     }
 
     private fun changeFragment(fragment: Fragment) {
@@ -76,10 +83,41 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
 
-    override fun onBackPressed() {
-        if (currentFragment is BoardListFragment) {
+    private fun changeFragment(toDetail: Boolean) {
+        val transaction = supportFragmentManager.beginTransaction()
+
+        if (toDetail) {
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+            detailFragment?.let {
+                transaction.show(it)
+            } ?: run {
+                detailFragment = BoardDetailFragment()
+                transaction.add(mBinding.frame.id, detailFragment!!)
+                transaction.show(detailFragment!!)
+            }
+            listFragment?.let {
+                transaction.hide(it)
+            }
+            currentFragment = detailFragment
         } else {
-            changeFragment(BoardListFragment())
+            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+
+            listFragment?.let {
+                transaction.show(it)
+            }
+            detailFragment?.let {
+                transaction.hide(it)
+            }
+
+            currentFragment = listFragment
+        }
+        transaction.commitAllowingStateLoss()
+    }
+
+
+    override fun onBackPressed() {
+        if (currentFragment is BoardDetailFragment) {
+            toList()
         }
     }
 }

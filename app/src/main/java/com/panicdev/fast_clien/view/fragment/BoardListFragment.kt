@@ -45,7 +45,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
             rvList.run {
                 adapter = boardListAdapter
                 addOnItemClickListener<ListViewHolder> { viewHolder, position ->
-                    (activity as MainActivity).replacePage()
+                    (activity as MainActivity).toDetail()
                 }
             }
 
