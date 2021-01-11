@@ -20,7 +20,7 @@ class ParsingController(private val board: MainBoard) {
         val paramPageNo = "&po=$pageNo"
         val url = "${board.url}$divider$paramPageNo"
 
-        Log.d("asdasd", url)
+        Log.d("asdasd", url);
 
         Observable.fromCallable {
             Jsoup.connect(url).get()
