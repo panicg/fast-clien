@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.chainrefund.kevin.common.addOnItemClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -31,23 +32,23 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     lateinit var sheetBehaviorBottom: BottomSheetBehavior<ConstraintLayout>
 
     override fun initData() {
-        boardList = resources.getStringArray(R.array.menu_sub).toList()
+//        boardList = resources.getStringArray(R.array.menu_sub).toList()
         mainMenuList = resources.getStringArray(R.array.menu_main).toList()
         subMenuList = resources.getStringArray(R.array.menu_sub).toList()
 
-        boardListAdapter = BoardListAdapter()
+//        boardListAdapter = BoardListAdapter()
         mainMenuAdapter = MainMenuAdapter()
         subMenuAdapter = SubMenuAdapter()
     }
 
     override fun initView() {
-        mBinding.run{
-            rvList.run {
-                adapter = boardListAdapter
-                addOnItemClickListener<ListViewHolder> { viewHolder, position ->
-                    (activity as MainActivity).toDetail()
-                }
-            }
+        mBinding.run {
+//            rvList.run {
+//                adapter = boardListAdapter
+//                addOnItemClickListener<ListViewHolder> { viewHolder, position ->
+//                    (activity as MainActivity).toDetail()
+//                }
+//            }
 
             toolbar.run {
                 title = "클리앙"
@@ -84,7 +85,18 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
     override fun initViewModel() {
         mViewModel.run {
+            list.observe(this@BoardListFragment, Observer {
+                boardList = it
+                boardListAdapter = BoardListAdapter()
+                mBinding.rvList.run {
+                    adapter = boardListAdapter
+                    addOnItemClickListener<ListViewHolder> { viewHolder, position ->
+                        (activity as MainActivity).toDetail()
+                    }
+                }
+            })
 
+            getTest()
         }
     }
 
@@ -96,15 +108,16 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     inner class BoardListAdapter : RecyclerView.Adapter<ListViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
             val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.holder_board_list, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.holder_board_list, parent, false)
             return ListViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-            holder.initView(subMenuList[position])
+            holder.initView(boardList[position])
         }
 
-        override fun getItemCount(): Int = subMenuList.size
+        override fun getItemCount(): Int = boardList.size
 
     }
 
