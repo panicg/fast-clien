@@ -1,6 +1,7 @@
 package com.panicdev.fast_clien.common
 
 import android.annotation.SuppressLint
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,24 +16,20 @@ class ParsingController(private val board: MainBoard) {
     val divider = "&=T31"
 
     @SuppressLint("CheckResult")
-    fun getList(pageNo: Int = 0, searchKeyword: String? = null, complete : (List<String>) -> Unit) {
+    fun getList(pageNo: Int = 0, searchKeyword: String? = null, complete: (List<String>) -> Unit) {
         val paramPageNo = "&po=$pageNo"
         val url = "${board.url}$divider$paramPageNo"
+
+        Log.d("asdasd", url)
 
         Observable.fromCallable {
             Jsoup.connect(url).get()
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { doc ->
-                val itemList  = doc.select("div.list_item.symph-row").map {
-                    try {
-                        it.select("div.list_title").select("a.list_subject").select("span").first().attributes()["title"]
-
-                    } catch (e : Exception){
-                        "dd"
-                    }
+                val itemList = doc.select("div.list_item.symph-row").map {
+                    it.select("div.list_title").select("a.list_subject").select("span").first().attributes()["title"]
                 }
-
                 complete(itemList)
             }
     }

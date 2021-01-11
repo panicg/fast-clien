@@ -22,7 +22,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     override val layoutResourceId: Int = R.layout.fragment_board_list
     override val mViewModel: BoardListViewModel by viewModel()
 
-    lateinit var boardList: List<String>
+    lateinit var boardList: ArrayList<String>
     lateinit var mainMenuList: List<String>
     lateinit var subMenuList: List<String>
     lateinit var boardListAdapter: BoardListAdapter
@@ -32,6 +32,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     lateinit var sheetBehaviorBottom: BottomSheetBehavior<ConstraintLayout>
 
     override fun initData() {
+        boardList = ArrayList()
 //        boardList = resources.getStringArray(R.array.menu_sub).toList()
         mainMenuList = resources.getStringArray(R.array.menu_main).toList()
         subMenuList = resources.getStringArray(R.array.menu_sub).toList()
@@ -43,12 +44,25 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
     override fun initView() {
         mBinding.run {
-//            rvList.run {
-//                adapter = boardListAdapter
-//                addOnItemClickListener<ListViewHolder> { viewHolder, position ->
-//                    (activity as MainActivity).toDetail()
-//                }
-//            }
+            rvList.run {
+                boardListAdapter = BoardListAdapter()
+                mBinding.rvList.run {
+                    adapter = boardListAdapter
+                }
+                addOnItemClickListener<ListViewHolder> { viewHolder, position ->
+                    (activity as MainActivity).toDetail()
+                }
+
+                addOnScrollListener(object :RecyclerView.OnScrollListener(){
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        if (!rvList.canScrollVertically(-1)) {
+                        } else if (!rvList.canScrollVertically(1)) {
+                            mViewModel.getTest(true)
+                        } else {
+                        }
+                    }
+                })
+            }
 
             toolbar.run {
                 title = "클리앙"
@@ -86,14 +100,8 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     override fun initViewModel() {
         mViewModel.run {
             list.observe(this@BoardListFragment, Observer {
-                boardList = it
-                boardListAdapter = BoardListAdapter()
-                mBinding.rvList.run {
-                    adapter = boardListAdapter
-                    addOnItemClickListener<ListViewHolder> { viewHolder, position ->
-                        (activity as MainActivity).toDetail()
-                    }
-                }
+                boardList.addAll(it)
+                boardListAdapter.notifyDataSetChanged()
             })
 
             getTest()

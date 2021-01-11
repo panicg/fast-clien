@@ -13,13 +13,20 @@ class BoardListViewModel : BaseViewModel() {
     val list: LiveData<List<String>>
         get() = _list
 
+    var page = 0
+
     init {
 
     }
 
 
-    fun getTest(){
-        parsingController.getList(0) { list ->
+    fun getTest(isPageUp : Boolean = false){
+        if (isPageUp){
+            page++
+        } else {
+            page = 0
+        }
+        parsingController.getList(page) { list ->
             _list.value = list
         }
     }
