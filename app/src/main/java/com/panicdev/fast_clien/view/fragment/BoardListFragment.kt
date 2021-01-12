@@ -12,6 +12,7 @@ import com.panicdev.base_bottom_navigation_mvvm.base.BaseFragment
 import com.panicdev.fast_clien.databinding.FragmentBoardListBinding
 import com.panicdev.fast_clien.viewModel.BoardListViewModel
 import com.panicdev.fast_clien.R
+import com.panicdev.fast_clien.common.BoardItem
 import com.panicdev.kevin.common.*
 import com.panicdev.fast_clien.databinding.HolderBoardListBinding
 import com.panicdev.fast_clien.databinding.HolderMenuBinding
@@ -22,7 +23,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     override val layoutResourceId: Int = R.layout.fragment_board_list
     override val mViewModel: BoardListViewModel by viewModel()
 
-    lateinit var boardList: ArrayList<String>
+    lateinit var boardList: ArrayList<BoardItem>
     lateinit var mainMenuList: List<String>
     lateinit var subMenuList: List<String>
     lateinit var boardListAdapter: BoardListAdapter
@@ -133,9 +134,9 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
     inner class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var mBinding = HolderBoardListBinding.bind(view)
-        fun initView(title: String) {
+        fun initView(item: BoardItem) {
             mBinding.run {
-                tvTitle.text = title
+                tvTitle.text = item.title
             }
         }
     }

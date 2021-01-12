@@ -6,13 +6,13 @@ data class BoardItem(
     //제목
     val title: String,
     //댓글 수
-    val commentCount: Int,
+    val reply: String?,
     //작성일
-    val date: Date,
+    val time: String,
     //조회수
-    val hit: Long,
+    val hit: String?,
     //공감수
-    val like: Int,
+    val symph: String?,
     //작성자
-    val writerId: String
+    val author: String
 )

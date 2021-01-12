@@ -13,10 +13,14 @@ import java.lang.Exception
 
 class ParsingController(private val board: MainBoard) {
 
-    val divider = "&=T31"
+    val divider = "?&od=T31"
 
     @SuppressLint("CheckResult")
-    fun getList(pageNo: Int = 0, searchKeyword: String? = null, complete: (List<String>) -> Unit) {
+    fun getList(
+        pageNo: Int = 0,
+        searchKeyword: String? = null,
+        complete: (List<BoardItem>) -> Unit
+    ) {
         val paramPageNo = "&po=$pageNo"
         val url = "${board.url}$divider$paramPageNo"
 
@@ -27,8 +31,17 @@ class ParsingController(private val board: MainBoard) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { doc ->
                 val itemList = doc.select("div.list_item.symph-row").map {
-                    //title
-                    it.select("div.list_title").select("a.list_subject").select("span").first().attributes()["title"]
+                    BoardItem(
+                        title = it.select("div.list_title").select("a.list_subject").select("span")
+                            .first().attributes()["title"],
+                        time = it.select("div.list_time").select("span").first().text(),
+                        hit = it.select("div.list_hit").select("span").first()?.text(),
+                        reply = it.select("div.list_reply").select("span").first()?.text(),
+                        author = "test",
+//                        author =it.select("span.nickname").first().text(),
+                        symph = null
+//                        symph =it.select("div.list_symph")?.select("span")?.first()?.text()
+                    )
                 }
                 complete(itemList)
             }
