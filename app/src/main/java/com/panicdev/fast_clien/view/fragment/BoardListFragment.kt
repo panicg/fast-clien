@@ -137,6 +137,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
         fun initView(item: BoardItem) {
             mBinding.run {
                 tvTitle.text = item.title
+                tvRecommend.text = item.reply
             }
         }
     }

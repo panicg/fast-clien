@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
         android:padding="10dp">
 
         <TextView
@@ -14,13 +15,13 @@
             android:layout_height="wrap_content"
             android:textColor="@color/menu_text_color"
             app:layout_constraintBottom_toTopOf="@+id/ll_info"
-            app:layout_constraintEnd_toStartOf="@+id/tv_comment_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_reply"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
         <TextView
-            android:id="@+id/tv_comment_count"
+            android:id="@+id/tv_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/menu_text_color"
