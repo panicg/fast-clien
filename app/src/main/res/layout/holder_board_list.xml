@@ -6,16 +6,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
         android:padding="10dp">
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/menu_text_color"
             app:layout_constraintBottom_toTopOf="@+id/ll_info"
+            app:layout_constraintEnd_toStartOf="@+id/tv_reply"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
+
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/menu_text_color"
+            app:layout_constraintBottom_toTopOf="@+id/ll_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10" />
 
         <LinearLayout
             android:id="@+id/ll_info"
@@ -23,14 +36,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title">
 
             <TextView
                 android:id="@+id/tv_recommend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="100" />
+                tools:text="panic_c" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

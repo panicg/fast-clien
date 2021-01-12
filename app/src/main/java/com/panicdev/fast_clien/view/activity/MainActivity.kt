@@ -24,66 +24,24 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override val mViewModel: MainViewModel by viewModel()
     override val layoutResourceId: Int = R.layout.activity_main
 
-    //하단 메뉴 프래그먼트
-    private val boardListFragment = BoardListFragment()
-    lateinit var sheetBehaviorBottom: BottomSheetBehavior<ConstraintLayout>
-
-    lateinit var fragmentTransactionList: FragmentTransaction
-
-    //메인메뉴 리스트
-    lateinit var mainMenuList: List<String>
-    lateinit var subMenuList: List<String>
-    lateinit var rvAdapterMain: MainMenuAdapter
-    lateinit var rvAdapterSub: SubMenuAdapter
 
     var currentFragment: Fragment? = null
 
+    var listFragment: BoardListFragment? = null
+    var detailFragment: BoardDetailFragment? = null
+
 
     override fun setData() {
-        mainMenuList = resources.getStringArray(R.array.menu_main).toList()
-        subMenuList = resources.getStringArray(R.array.menu_sub).toList()
+        listFragment = BoardListFragment()
+
     }
 
     override fun setView() {
         mBinding.run {
             view = this@MainActivity
-
-            fragmentTransactionList = supportFragmentManager.beginTransaction().apply {
-                replace(frame.id, boardListFragment)
-                commit()
-            }
-
-            toolbar.run {
-                title = "클리앙"
-            }
-
-            //하단 시트
-            sheetBehaviorBottom = BottomSheetBehavior.from(bottomSheet.bottomSheet).apply {
-                state = BottomSheetBehavior.STATE_HIDDEN
-                addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                    override fun onSlide(p0: View, p1: Float) {
-                    }
-
-                    override fun onStateChanged(p0: View, p1: Int) {
-                        when (p1) {
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-                            }
-                            BottomSheetBehavior.STATE_HIDDEN -> {
-                            }
-                            BottomSheetBehavior.STATE_COLLAPSED -> {
-                            }
-                        }
-                    }
-                })
-            }
-
-            bottomSheet.run {
-                rvAdapterMain = MainMenuAdapter()
-                rvAdapterSub = SubMenuAdapter()
-                rvMenuMain.adapter = rvAdapterMain
-                rvMenuSub.adapter = rvAdapterSub
-            }
-
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(frame.id, listFragment!!).commit()
+            currentFragment = listFragment
         }
     }
 
@@ -93,8 +51,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    fun replacePage(){
-        changeFragment(BoardDetailFragment())
+
+    fun toDetail() {
+        changeFragment(true)
+    }
+
+    fun toList() {
+        changeFragment(false)
     }
 
     private fun changeFragment(fragment: Fragment) {
@@ -104,70 +67,69 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         supportFragmentManager.findFragmentByTag(fragment.javaClass.simpleName)
             ?.let { findedFragment ->
+                tranaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 tranaction.show(findedFragment)
                 (findedFragment as BaseFragment<*, *>).onRefresh()
-                currentFragment = findedFragment
             } ?: run {
+            tranaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
             tranaction.add(
                 mBinding.frame.id,
                 fragment,
                 fragment.javaClass.simpleName
             )
             tranaction.show(fragment)
-            currentFragment = fragment
         }
+        currentFragment = fragment
         tranaction.commitAllowingStateLoss()
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private fun changeFragment(toDetail: Boolean) {
+        val transaction = supportFragmentManager.beginTransaction()
 
+        if (toDetail) {
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+            detailFragment?.let {
+                transaction.show(it)
+            } ?: run {
+                detailFragment = BoardDetailFragment()
+                transaction.add(mBinding.frame.id, detailFragment!!)
+                transaction.show(detailFragment!!)
+            }
+            listFragment?.let {
+                transaction.hide(it)
+            }
+            currentFragment = detailFragment
+        } else {
+            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+
+            listFragment?.let {
+                transaction.show(it)
+            }
+            detailFragment?.let {
+                transaction.hide(it)
+            }
+
+            currentFragment = listFragment
+        }
+        transaction.commitAllowingStateLoss()
     }
 
 
     override fun onBackPressed() {
+        when (currentFragment) {
+            is BoardListFragment -> {
+                val thatFragment = (currentFragment as BoardListFragment)
+                if (thatFragment.sheetBehaviorBottom.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    thatFragment.sheetBehaviorBottom.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else {
 
-    }
+                }
+            }
 
-    inner class MainMenuAdapter : RecyclerView.Adapter<MainMenuViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainMenuViewHolder {
-            val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.holder_menu, parent, false)
-            return MainMenuViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: MainMenuViewHolder, position: Int) {
-            holder.initView(mainMenuList[position])
-        }
-
-        override fun getItemCount(): Int = mainMenuList.size
-
-    }
-
-    inner class SubMenuAdapter : RecyclerView.Adapter<MainMenuViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainMenuViewHolder {
-            val view =
-                LayoutInflater.from(parent.context).inflate(R.layout.holder_menu, parent, false)
-            return MainMenuViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: MainMenuViewHolder, position: Int) {
-            holder.initView(subMenuList[position])
-        }
-
-        override fun getItemCount(): Int = subMenuList.size
-
-    }
-
-    inner class MainMenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var mBinding = HolderMenuBinding.bind(view)
-        fun initView(menu: String) {
-            mBinding.run {
-                tvMenu.text = menu
+            is BoardDetailFragment -> {
+                toList()
             }
         }
     }
-
-
 }
