@@ -41,4 +41,6 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding, BoardDetail
 
 
 
+
+
 }

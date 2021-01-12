@@ -70,7 +70,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
             //하단 시트
             sheetBehaviorBottom = BottomSheetBehavior.from(bottomSheet.bottomSheet).apply {
-                state = BottomSheetBehavior.STATE_HIDDEN
+                state = BottomSheetBehavior.STATE_COLLAPSED
                 addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                     override fun onSlide(p0: View, p1: Float) {
                     }
@@ -79,9 +79,9 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
                         when (p1) {
                             BottomSheetBehavior.STATE_EXPANDED -> {
                             }
-                            BottomSheetBehavior.STATE_HIDDEN -> {
-                            }
                             BottomSheetBehavior.STATE_COLLAPSED -> {
+                                //if collapsed state, scroll up to top
+                                mBinding.bottomSheet.scrollview.smoothScrollTo(0, 0)
                             }
                         }
                     }
@@ -111,6 +111,8 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     override fun onRefresh() {
 
     }
+
+
 
 
     inner class BoardListAdapter : RecyclerView.Adapter<ListViewHolder>() {

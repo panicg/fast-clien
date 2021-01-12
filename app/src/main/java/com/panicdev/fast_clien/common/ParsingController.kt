@@ -20,7 +20,6 @@ class ParsingController(private val board: MainBoard) {
         val paramPageNo = "&po=$pageNo"
         val url = "${board.url}$divider$paramPageNo"
 
-        Log.d("asdasd", url);
 
         Observable.fromCallable {
             Jsoup.connect(url).get()
@@ -28,6 +27,7 @@ class ParsingController(private val board: MainBoard) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { doc ->
                 val itemList = doc.select("div.list_item.symph-row").map {
+                    //title
                     it.select("div.list_title").select("a.list_subject").select("span").first().attributes()["title"]
                 }
                 complete(itemList)

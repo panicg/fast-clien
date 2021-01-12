@@ -41,6 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             view = this@MainActivity
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(frame.id, listFragment!!).commit()
+            currentFragment = listFragment
         }
     }
 
@@ -116,8 +117,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 
     override fun onBackPressed() {
-        if (currentFragment is BoardDetailFragment) {
-            toList()
+        when (currentFragment) {
+            is BoardListFragment -> {
+                val thatFragment = (currentFragment as BoardListFragment)
+                if (thatFragment.sheetBehaviorBottom.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    thatFragment.sheetBehaviorBottom.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+
+                }
+            }
+
+            is BoardDetailFragment -> {
+                toList()
+            }
         }
     }
 }
