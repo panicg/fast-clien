@@ -37,10 +37,8 @@ class ParsingController(private val board: MainBoard) {
                         time = it.select("div.list_time").select("span").first().text(),
                         hit = it.select("div.list_hit").select("span").first()?.text(),
                         reply = it.select("div.list_reply").select("span").first()?.text(),
-                        author = "test",
-//                        author =it.select("span.nickname").first().text(),
-                        symph = null
-//                        symph =it.select("div.list_symph")?.select("span")?.first()?.text()
+                        author =it.select("span.nickname").first()?.text() ?: "empty",
+                        symph = it.select("div.list_symph")?.select("span")?.first()?.text()
                     )
                 }
                 complete(itemList)

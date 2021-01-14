@@ -8,7 +8,7 @@ import com.panicdev.fast_clien.common.MainBoard
 import com.panicdev.fast_clien.common.ParsingController
 
 class BoardListViewModel : BaseViewModel() {
-    var parsingController: ParsingController = ParsingController(MainBoard.park)
+    var parsingController: ParsingController? = null
 
     private val _list = MutableLiveData<List<BoardItem>>()
     val list: LiveData<List<BoardItem>>
@@ -21,14 +21,32 @@ class BoardListViewModel : BaseViewModel() {
     }
 
 
-    fun getTest(isPageUp : Boolean = false){
-        if (isPageUp){
+    fun getTest(isPageUp: Boolean = false) {
+        if (isPageUp) {
             page++
         } else {
             page = 0
         }
-        parsingController.getList(page) { list ->
+        parsingController?.getList(page) { list ->
             _list.value = list
+        }
+    }
+
+    fun initBoard(type: MainBoard) {
+        parsingController = ParsingController(type)
+    }
+
+
+     fun reqBoard(pageUp: Boolean = false) {
+        if (pageUp) {
+            page++
+        } else {
+            page = 0
+        }
+        parsingController?.getList(page) { list ->
+            _list.value = list
+        } ?: run {
+            _alert.value = "plz set board type first"
         }
     }
 }

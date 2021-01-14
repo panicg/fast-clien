@@ -13,6 +13,7 @@ import com.panicdev.fast_clien.databinding.FragmentBoardListBinding
 import com.panicdev.fast_clien.viewModel.BoardListViewModel
 import com.panicdev.fast_clien.R
 import com.panicdev.fast_clien.common.BoardItem
+import com.panicdev.fast_clien.common.MainBoard
 import com.panicdev.kevin.common.*
 import com.panicdev.fast_clien.databinding.HolderBoardListBinding
 import com.panicdev.fast_clien.databinding.HolderMenuBinding
@@ -34,11 +35,9 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
     override fun initData() {
         boardList = ArrayList()
-//        boardList = resources.getStringArray(R.array.menu_sub).toList()
         mainMenuList = resources.getStringArray(R.array.menu_main).toList()
         subMenuList = resources.getStringArray(R.array.menu_sub).toList()
 
-//        boardListAdapter = BoardListAdapter()
         mainMenuAdapter = MainMenuAdapter()
         subMenuAdapter = SubMenuAdapter()
     }
@@ -50,7 +49,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
                 mBinding.rvList.run {
                     adapter = boardListAdapter
                 }
-                addOnItemClickListener<ListViewHolder> { viewHolder, position ->
+                addOnItemClickListener<ListViewHolder> { _, _ ->
                     (activity as MainActivity).toDetail()
                 }
 
@@ -58,7 +57,10 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         if (!rvList.canScrollVertically(-1)) {
                         } else if (!rvList.canScrollVertically(1)) {
-                            mViewModel.getTest(true)
+                            mViewModel.run{
+                                initBoard(MainBoard.park)
+                                reqBoard(true)
+                            }
                         } else {
                         }
                     }
@@ -67,6 +69,16 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
 
             toolbar.run {
                 title = "클리앙"
+            }
+
+            swipeRefresh.run {
+                setOnRefreshListener {
+                    boardList.clear()
+                    mViewModel.run {
+                        initBoard(MainBoard.park)
+                        reqBoard(false)
+                    }
+                }
             }
 
             //하단 시트
@@ -90,6 +102,28 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
             }
 
             bottomSheet.run {
+                rvMenuMain.run {
+                    addOnItemClickListener<MainMenuViewHolder> { viewHolder, position ->
+                        when(position){
+                            0 -> {
+                                mViewModel.run {
+                                    boardList.clear()
+                                    initBoard(MainBoard.park)
+                                    reqBoard(false)
+                                }
+
+                            }
+
+                            3 -> {
+                                mViewModel.run {
+                                    boardList.clear()
+                                    initBoard(MainBoard.news)
+                                    reqBoard(false)
+                                }
+                            }
+                        }
+                    }
+                }
                 mainMenuAdapter = MainMenuAdapter()
                 subMenuAdapter = SubMenuAdapter()
                 rvMenuMain.adapter = mainMenuAdapter
@@ -101,11 +135,13 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
     override fun initViewModel() {
         mViewModel.run {
             list.observe(this@BoardListFragment, Observer {
+                mBinding.swipeRefresh.isRefreshing = false
                 boardList.addAll(it)
                 boardListAdapter.notifyDataSetChanged()
             })
 
-            getTest()
+            initBoard(MainBoard.news)
+            reqBoard(false)
         }
     }
 
@@ -137,7 +173,10 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
         fun initView(item: BoardItem) {
             mBinding.run {
                 tvTitle.text = item.title
-                tvRecommend.text = item.reply
+                tvReply.text = item.reply
+                tvAuthor.text = item.author
+                tvSymph.text = item.symph
+                tvTime.text = item.time
             }
         }
     }
