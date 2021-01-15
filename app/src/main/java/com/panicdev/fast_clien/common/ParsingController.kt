@@ -2,6 +2,7 @@ package com.panicdev.fast_clien.common
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.panicdev.fast_clien.common.ConstantData.baseUrl
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,6 +13,9 @@ import org.w3c.dom.Element
 import java.lang.Exception
 
 class ParsingController(private val board: MainBoard) {
+
+
+    constructor(item : BoardItem) : this(item.boardType)
 
     val divider = "?&od=T31"
 
@@ -32,16 +36,29 @@ class ParsingController(private val board: MainBoard) {
             .subscribe { doc ->
                 val itemList = doc.select("div.list_item.symph-row").map {
                     BoardItem(
+                        boardType = board,
                         title = it.select("div.list_title").select("a.list_subject").select("span")
                             .first().attributes()["title"],
                         time = it.select("div.list_time").select("span").first().text(),
                         hit = it.select("div.list_hit").select("span").first()?.text(),
                         reply = it.select("div.list_reply").select("span").first()?.text(),
                         author =it.select("span.nickname").first()?.text() ?: "empty",
-                        symph = it.select("div.list_symph")?.select("span")?.first()?.text()
+                        symph = it.select("div.list_symph")?.select("span")?.first()?.text(),
+                        onclick = it.attributes()["onclick"].split("\'")[1]
                     )
                 }
                 complete(itemList)
+            }
+    }
+
+
+    fun getDetail(boardItem : BoardItem){
+        Observable.fromCallable {
+            Jsoup.connect("$baseUrl${boardItem.onclick}").get()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { doc ->
+                0
             }
     }
 }

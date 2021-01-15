@@ -49,8 +49,8 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding, BoardListViewMo
                 mBinding.rvList.run {
                     adapter = boardListAdapter
                 }
-                addOnItemClickListener<ListViewHolder> { _, _ ->
-                    (activity as MainActivity).toDetail()
+                addOnItemClickListener<ListViewHolder> { _, position ->
+                    (activity as MainActivity).toDetail(boardList[position])
                 }
 
                 addOnScrollListener(object :RecyclerView.OnScrollListener(){
