@@ -1,5 +1,13 @@
 package com.panicdev.fast_clien.common
 
+import com.panicdev.fast_clien.common.ConstantData.baseUrl
+import com.panicdev.fast_clien.common.ConstantData.boardUrl
+
+
+object ConstantData{
+    const val baseUrl : String = "https://m.clien.net"
+    const val boardUrl : String = "/service/board"
+}
 enum class MainBoard {
     park,
     news,
@@ -36,20 +44,20 @@ enum class MainBoard {
 
     val url : String
     get() {
-        return when (this) {
-            park -> "https://m.clien.net/service/board/park"
-            news -> "https://m.clien.net/service/board/news"
-            image -> "https://m.clien.net/service/board/image"
-            kin -> "https://m.clien.net/service/board/kin"
-            useful -> "https://m.clien.net/service/board/useful"
-            pds -> "https://m.clien.net/service/board/pds"
-            lecture -> "https://m.clien.net/service/board/lecture"
-            use -> "https://m.clien.net/service/board/use"
-            chehum -> "https://m.clien.net/service/board/chehum"
-            jirum -> "https://m.clien.net/service/board/jirum"
-            sold -> "https://m.clien.net/service/board/sold"
-            hongbo -> "https://m.clien.net/service/board/hongbo"
-            insure -> "https://m.clien.net/service/board/insure"
+        return "$baseUrl$boardUrl/" + when (this) {
+            park -> "park"
+            news -> "news"
+            image -> "image"
+            kin -> "kin"
+            useful -> "useful"
+            pds -> "pds"
+            lecture -> "lecture"
+            use -> "use"
+            chehum -> "chehum"
+            jirum -> "jirum"
+            sold -> "sold"
+            hongbo -> "hongbo"
+            insure -> "insure"
         }
     }
 }

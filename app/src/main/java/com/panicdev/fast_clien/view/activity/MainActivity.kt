@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.panicdev.base_bottom_navigation_mvvm.base.BaseFragment
 import com.panicdev.fast_clien.R
 import com.panicdev.fast_clien.base.BaseActivity
+import com.panicdev.fast_clien.common.BoardItem
 import com.panicdev.fast_clien.databinding.ActivityMainBinding
 import com.panicdev.fast_clien.databinding.HolderMenuBinding
 import com.panicdev.fast_clien.view.fragment.BoardDetailFragment
@@ -33,7 +34,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun setData() {
         listFragment = BoardListFragment()
-
+        detailFragment = BoardDetailFragment()
     }
 
     override fun setView() {
@@ -52,39 +53,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
 
-    fun toDetail() {
-        changeFragment(true)
+    fun toDetail(item : BoardItem) {
+        changeFragment(true){
+            detailFragment?.setDetailData(item)
+        }
     }
 
     fun toList() {
         changeFragment(false)
     }
 
-    private fun changeFragment(fragment: Fragment) {
-        val tranaction = supportFragmentManager.beginTransaction()
-        currentFragment?.let { currentFragment ->
-            tranaction.hide(currentFragment)
-        }
-        supportFragmentManager.findFragmentByTag(fragment.javaClass.simpleName)
-            ?.let { findedFragment ->
-                tranaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                tranaction.show(findedFragment)
-                (findedFragment as BaseFragment<*, *>).onRefresh()
-            } ?: run {
-            tranaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-            tranaction.add(
-                mBinding.frame.id,
-                fragment,
-                fragment.javaClass.simpleName
-            )
-            tranaction.show(fragment)
-        }
-        currentFragment = fragment
-        tranaction.commitAllowingStateLoss()
-    }
 
 
-    private fun changeFragment(toDetail: Boolean) {
+
+    private fun changeFragment(toDetail: Boolean, complete : ((Boolean) -> Unit)? = null) {
         val transaction = supportFragmentManager.beginTransaction()
 
         if (toDetail) {
@@ -100,6 +82,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 transaction.hide(it)
             }
             currentFragment = detailFragment
+            complete?.let { it(true) }
         } else {
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
 

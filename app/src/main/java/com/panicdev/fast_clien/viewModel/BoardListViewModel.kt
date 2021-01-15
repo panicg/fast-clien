@@ -20,24 +20,12 @@ class BoardListViewModel : BaseViewModel() {
 
     }
 
-
-    fun getTest(isPageUp: Boolean = false) {
-        if (isPageUp) {
-            page++
-        } else {
-            page = 0
-        }
-        parsingController?.getList(page) { list ->
-            _list.value = list
-        }
-    }
-
     fun initBoard(type: MainBoard) {
         parsingController = ParsingController(type)
     }
 
 
-     fun reqBoard(pageUp: Boolean = false) {
+    fun reqBoard(pageUp: Boolean = false) {
         if (pageUp) {
             page++
         } else {

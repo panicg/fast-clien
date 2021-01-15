@@ -9,6 +9,7 @@ import com.panicdev.base_bottom_navigation_mvvm.base.BaseFragment
 import com.panicdev.fast_clien.databinding.FragmentBoardListBinding
 import com.panicdev.fast_clien.viewModel.BoardListViewModel
 import com.panicdev.fast_clien.R
+import com.panicdev.fast_clien.common.BoardItem
 import com.panicdev.fast_clien.databinding.FragmentBoardDetailBinding
 import com.panicdev.fast_clien.databinding.HolderBoardListBinding
 import com.panicdev.fast_clien.databinding.HolderMenuBinding
@@ -39,8 +40,10 @@ class BoardDetailFragment : BaseFragment<FragmentBoardDetailBinding, BoardDetail
 
     }
 
-
-
-
-
+    fun setDetailData(item : BoardItem){
+        mViewModel.run {
+            initBoard(item)
+            reqBoard()
+        }
+    }
 }
